@@ -11,7 +11,7 @@ local on_install_success_handler = function (pkg, handler)
         table.insert(memory.serverlist, pkg.name)
     end
     serde.export(memory.filepath, memory.serverlist)
-    vim.notify(("Added %s to servers.json"):format(pkg.name))
+    vim.notify(("Added %s to %s"):format(pkg.name, memory.filename))
 end
 
 local on_uninstall_success_handler = function (pkg)
@@ -22,7 +22,7 @@ local on_uninstall_success_handler = function (pkg)
         memory.serverlist)
 
     serde.export(memory.filepath, memory.serverlist)
-    vim.notify(("Removed %s from servers.json"):format(pkg.name))
+    vim.notify(("Removed %s from %s"):format(pkg.name, memory.filename))
 end
 
 M.setup = function (opts)
