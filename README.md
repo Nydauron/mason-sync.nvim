@@ -32,6 +32,22 @@ require("mason-sync").setup({
 })
 ```
 
+After calling `setup()`, to get the list of servers to need to be installed on startup, use
+`require("mason-sync").ensure_installed_servers()`. Here is an example with `mason-tool-installer`:
+
+```lua
+require("mason-tool-installer").setup({
+    ensure_installed = require("mason-sync").ensure_installed_servers(),
+})
+```
+
+`mason-lspconfig` would look something like this:
+```lua
+require("mason-lspconfig").setup({
+    ensure_installed = require("mason-sync").ensure_installed_servers(),
+})
+```
+
 ## Commands
 
 - `MasonSync`: Hard refreshes the server file list with all the current server installs that are

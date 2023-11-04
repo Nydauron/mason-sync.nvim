@@ -1,4 +1,7 @@
 local registry = require("mason-registry")
+local mason_lspconfig_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
+if not mason_lspconfig_ok then mason_lspconfig = nil end
+
 local memory = require("mason-sync.memory")
 local options = require("mason-sync.options")
 local serde = require("mason-sync.serde")
@@ -55,15 +58,26 @@ M.setup = function (opts)
 
     -- Function to handle syncing from Servers to the file
     vim.api.nvim_create_user_command("MasonSync", function (args_table)
+        -- local name, args, fargs = table.unpack(args_table, 1, 3)
 
         local all_servers = registry.get_installed_package_names()
         serde.export(memory.filepath, all_servers)
         vim.notify(("Synced %s"):format(memory.filename))
     end, {})
+    -- vim.api.nvim_create_user_command("MasonSyncDiff", , {})
 end
 
+M.ensure_installed_servers = function ()
+    return vim.tbl_map(function (mason_name)
+        local name = mason_name
+        if mason_lspconfig then
+            name = mason_lspconfig.get_mappings().mason_to_lspconfig[name] or name
+        end
+        return name
+    end, memory.serverlist)
+end
 
-M.ensure_servers = function ()
+M.get_serverlist = function ()
     return memory.serverlist
 end
 
