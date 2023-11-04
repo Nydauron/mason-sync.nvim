@@ -75,17 +75,17 @@ M.parse_options = function (opts)
     end
 
     local parser
-    parser = function (default_opts, user_opts)
+    parser = function (default_opts, user_opts, acceptable_types)
         local opts = default_opts
         for key, default_value in pairs(default_opts) do
             if vim.tbl_contains(vim.tbl_keys(user_opts), key) then
                 if type(default_value) == "table" and not vim.tbl_islist(default_value) then
                     -- recurse
-                    local sub_options = parser(default_value, user_opts[key])
+                    local sub_options = parser(default_value, user_opts[key], acceptable_types[key])
                     opts[key] = sub_options
                     goto continue
                 end
-                if vim.tbl_contains(options_acceptable_types[key], type(user_opts[key])) then
+                if vim.tbl_contains(acceptable_types[key], type(user_opts[key])) then
                     opts[key] = user_opts[key]
                 end
             end
@@ -94,7 +94,7 @@ M.parse_options = function (opts)
         return opts
     end
 
-    M.options = parser(default_opts, opts)
+    M.options = parser(default_opts, opts, options_acceptable_types)
 end
 
 return M
