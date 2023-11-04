@@ -3,7 +3,7 @@ if not plenary_ok then
     error("Make sure you have plenary installed!", 1)
 end
 local options = require("mason-sync.options")
-local json = require("JSON")
+local JSON = require("JSON")
 
 local M = {}
 

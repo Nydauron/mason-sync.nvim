@@ -2,7 +2,7 @@ local registry = require("mason-registry")
 local memory = require("mason-sync.memory")
 local options = require("mason-sync.options")
 local serde = require("mason-sync.serde")
-local json = require("JSON")
+local JSON = require("JSON")
 
 local M = {}
 
@@ -33,7 +33,7 @@ M.setup = function (opts)
     local fd, errstr = io.open(memory.filepath, "r")
 
     if fd ~= nil then
-        local decoded_table = json:decode(fd:read("a"))
+        local decoded_table = JSON:decode(fd:read("a"))
         if type(decoded_table) == "table" then
             memory.serverlist = decoded_table
         else
