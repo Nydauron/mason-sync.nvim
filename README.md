@@ -3,6 +3,11 @@ A NeoVim plugin that saves your Mason installs to your nvim configuration
 
 ## Installation
 
+Required dependencies:
+
+- `neovim` >= v0.9.0
+- `mason`
+
 Packer:
 
 ```lua

@@ -31,8 +31,16 @@ end
 M.setup = function (opts)
     options.parse_options(opts)
 
-    memory.filepath = vim.fs.normalize(vim.fs.joinpath(options.options.root_dir, options.options.file))
+    if vim.version.lt(vim.version(), {0, 10, 0}) then
+        -- < v0.10.0
+        memory.filepath = vim.fs.normalize(options.options.root_dir .. "/" .. options.options.file)
+    else
+        -- >= v0.10.0
+        -- vim.fs.joinpath is a v0.10 sepc
+        memory.filepath = vim.fs.normalize(vim.fs.joinpath(options.options.root_dir, options.options.file))
+    end
     memory.filename = vim.fs.basename(memory.filepath)
+
     local fd, errstr = io.open(memory.filepath, "r")
 
     if fd ~= nil then
