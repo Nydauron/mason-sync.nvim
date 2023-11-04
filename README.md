@@ -21,6 +21,14 @@ require("mason-sync").setup({
     file = "servers.json",
     -- Root directory where file will reside.
     root_dir = vim.fn.stdpath("config"),
+    sync_on_mason_change = {
+        -- After each sucessful Mason install, mason-sync will sync the current list of plugins to
+        -- the file specified
+        on_install = true,
+        -- After each sucessful Mason uninstall, mason-sync will sync the current list of plugins
+        -- to the file specified
+        on_uninstall = true,
+    },
 })
 ```
 

@@ -7,6 +7,14 @@ local default_opts = {
     file = "servers.json",
     -- Root directory where file will reside. Defaults to where ever stdpath("config") returns
     root_dir = vim.fn.stdpath("config"),
+    sync_on_mason_change = {
+        -- After each sucessful Mason install, mason-sync will sync the current list of plugins to
+        -- the file specified
+        on_install = true,
+        -- After each sucessful Mason uninstall, mason-sync will sync the current list of plugins
+        -- to the file specified
+        on_uninstall = true,
+    },
     git = {
         -- Enables Git integration
         enable = false,
@@ -37,6 +45,10 @@ end
 local options_acceptable_types = {
     file = { "string" },
     root_dir = { "string" },
+    sync_on_mason_change = {
+        on_install = { "boolean" },
+        on_uninstall = { "boolean" },
+    },
     git = {
         enable = { "bool" },
         flavor = { "string" },

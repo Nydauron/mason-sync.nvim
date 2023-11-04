@@ -46,8 +46,12 @@ M.setup = function (opts)
         warn(("An unknown issue occurred when trying to open '%s'"):format(memory.filename))
     end
 
-    registry:on("package:install:success", vim.schedule_wrap(on_install_success_handler))
-    registry:on("package:uninstall:success", vim.schedule_wrap(on_uninstall_success_handler))
+    if options.options.sync_on_mason_change.on_install then
+        registry:on("package:install:success", vim.schedule_wrap(on_install_success_handler))
+    end
+    if options.options.sync_on_mason_change.on_uninstall then
+        registry:on("package:uninstall:success", vim.schedule_wrap(on_uninstall_success_handler))
+    end
 
     -- Function to handle syncing from Servers to the file
     vim.api.nvim_create_user_command("MasonSync", function (args_table)
