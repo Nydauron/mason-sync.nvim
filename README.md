@@ -12,7 +12,7 @@ Packer:
 
 ```lua
     use {
-        '/home/jareth/Git/neovim-plugins/mason-sync.nvim/',
+        'Nydauron/mason-sync.nvim',
         requires = {'nvim-lua/plenary.nvim'},
     }
 ```
