@@ -1,18 +1,23 @@
 local M = {}
 
 local default_opts = {
-    -- The file used for storing all installed Mason servers. Defaults to root of git repo (if git
-    -- option is enabled) or root of neovim config
-    -- TODO: look to add option to export to different filetypes (JSON, YAML, TOML)
+    -- The file used for storing all installed Mason servers. Defaults
+    -- to root of git repo (if git option is enabled) or root of neovim
+    -- config
+    ---@type string
     file = "servers.json",
-    -- Root directory where file will reside. Defaults to where ever stdpath("config") returns
+    -- The root directory where `file` will reside. Defaults to whereever
+    -- `stdpath("config")` returns
+    ---@type string
     root_dir = vim.fn.stdpath("config"),
     sync_on_mason_change = {
-        -- After each sucessful Mason install, mason-sync will sync the current list of plugins to
-        -- the file specified
+        -- After each sucessful Mason install, mason-sync will sync the
+        -- current list of plugins to `file`
+        ---@type boolean
         on_install = true,
-        -- After each sucessful Mason uninstall, mason-sync will sync the current list of plugins
-        -- to the file specified
+        -- After each sucessful Mason uninstall, mason-sync will sync the
+        -- current list of plugins to `file`
+        ---@type boolean
         on_uninstall = true,
     },
     git = {
@@ -37,10 +42,6 @@ local default_opts = {
         end
     },
 }
-
-if type(default_opts.root_dir) ~= "string" then
-    error("vim.fn.stdpath(\"config\") did not return a string type", 1)
-end
 
 local options_acceptable_types = {
     file = { "string" },

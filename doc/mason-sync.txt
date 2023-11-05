@@ -1,0 +1,112 @@
+================================================================================
+                                                             *mason-sync.nvim*
+
+`mason-sync.nvim` is a plugin for syncing and exporting Mason installs to a
+file.
+
+REQUIREMENTS                                         *mason-sync-requirements*
+================================================================================
+
+Minimum supported version of neovim: 0.9.0
+
+Required plugins:
+
+- `mason.nvim`
+- `plenary.nvim`
+
+Supported plugins:
+
+- `mason-lspconfig.nvim`
+- `mason-tools-installer.nvim`
+
+`mason-sync.nvim` has been built to work on neovim version 0.9.0 and later.
+The only plugins that mason-sync.nvim requires are `mason.nvim` and
+`plenary.nvim`.
+
+SETUP                                                       *mason-sync-setup*
+================================================================================
+
+`mason-sync` can be set up simply by calling `require("mason-sync").setup()`.
+This will set up a basic configuration with the server list file being in the
+root of the default neovim config directory. On setup, `mason-sync` will
+read from the provided file and attempt to decode it into a list of strings.
+
+The plugin is meant to be used in tandem with either `mason-lspconfig.nvim`
+and/or `mason-tools-installer.nvim` right after setup. See
+|mason-sync.ensure_installed_servers()| for an example on passing a list of
+servers to install to `mason-lspconfig`.
+
+SETTINGS                                                 *mason-sync-settings*
+================================================================================
+
+The behavior of `mason-sync` can be configured when calling `setup()`. Below
+is an example how `mason-sync` might be set up:
+
+Example:
+
+    require("mason-setup").setup({
+        file = "lua/nydauron/lsp/ensure_installed.json"
+    })
+
+                                                 *mason-sync-default-settings*
+    local default_opts = {
+        -- The file used for storing all installed Mason servers. Defaults
+        -- to root of git repo (if git option is enabled) or root of neovim
+        -- config
+        ---@type string
+        file = "servers.json",
+        -- The root directory where `file` will reside. Defaults to whereever
+        -- `stdpath("config")` returns
+        ---@type string
+        root_dir = vim.fn.stdpath("config"),
+        sync_on_mason_change = {
+            -- After each sucessful Mason install, mason-sync will sync the
+            -- current list of plugins to `file`
+            ---@type boolean
+            on_install = true,
+            -- After each sucessful Mason uninstall, mason-sync will sync the
+            -- current list of plugins to `file`
+            ---@type boolean
+            on_uninstall = true,
+        },
+    }
+
+FUNCTIONS                                               *mason-sync-functions*
+================================================================================
+
+                                                          *mason-sync.setup()*
+setup({opts})
+
+    Sets up `mason-sync` with the provided {opts} (see |mason-sync-settings|).
+
+                                       *mason-sync.ensure_installed_servers()*
+ensure_installed_servers()
+
+    Retrieves all of the servers meant to be ensured based off the provided
+    file. The final product the function then returns is a list of strings.
+    This function also goes through all the Mason server names and converts
+    them into lspconfig names allowing this output to be used with 
+    `mason-lspconfig` or `mason-tools-installer`.
+
+        local servers = require("mason-sync").ensure_installed_servers()
+        require("mason-lspconfig").setup({
+            ensure_installed = servers,
+        })
+
+                                                 *mason-sync.get_serverlist()*
+get_serverlist()
+
+    Fetches the list of servers based off the provided file. Similarly, to
+    `ensure_installed_servers()`, this returns a list of strings, but instead
+    no Mason names are converted to lspconfig names.
+
+COMMANDS                                                 *mason-sync-commands*
+================================================================================
+
+                                                                  *:MasonSync*
+*:MasonSync*
+
+    Fetches all installed servers that are maintained by Mason and exports
+    them to the file specified.
+
+vim:tw=78:ts=8:ft=help:norl:
