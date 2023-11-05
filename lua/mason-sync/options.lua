@@ -22,21 +22,27 @@ local default_opts = {
     },
     git = {
         -- Enables Git integration
+        ---@type boolean
         enable = false,
         -- git (default): Runs git with CLI commands
         -- fugitive: Uses the vim plugin fugitive
         -- TODO: Check again how well fugitive will work
         -- Maybe by attaching listeners to the commit buffer
-        flavor = 'git',
+        ---@type "git" | "fugitive"
+        flavor = "git",
         -- Branch you want to commit to
-        branch = 'master',
+        ---@type string
+        branch = "master",
         -- The absolute path to the Git repo. If none specified, uses root_dir
+        ---@type string | nil
         work_tree = "",
         -- The absolute path to the .git folder associated with the repo. If not specified, it will
         -- assume `${work_tree}/.git` as the path
+        ---@type string | nil
         git_dir = "",
         -- function that generates a commit message. If set to nil or returns nil, it will fallback
         -- to manual prompt
+        ---@type string | function | nil
         commit_message = function ()
             return nil
         end
