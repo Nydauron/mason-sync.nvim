@@ -62,13 +62,6 @@ local options_acceptable_types = {
 
 M.options = default_opts
 
-M.set_options = function (opts)
-    for key, value in pairs(opts) do
-        -- TODO: this is def not covering nested tables
-        M.options[key] = value
-    end
-end
-
 M.parse_options = function (opts)
     if opts == nil or type(opts) ~= "table" or opts == {} then
         M.options = default_opts
