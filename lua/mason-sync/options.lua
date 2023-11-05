@@ -35,11 +35,11 @@ local default_opts = {
         branch = "master",
         -- The absolute path to the Git repo. If none specified, uses root_dir
         ---@type string | nil
-        work_tree = "",
+        work_tree = nil,
         -- The absolute path to the .git folder associated with the repo. If not specified, it will
         -- assume `${work_tree}/.git` as the path
         ---@type string | nil
-        git_dir = "",
+        git_dir = nil,
         -- function that generates a commit message. If set to nil or returns nil, it will fallback
         -- to manual prompt
         ---@type string | function | nil
