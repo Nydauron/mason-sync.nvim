@@ -41,20 +41,9 @@ M.setup = function (opts)
     end
     memory.filename = vim.fs.basename(memory.filepath)
 
-    local fd, errstr = io.open(memory.filepath, "r")
-
-    if fd ~= nil then
-        local decoded_table = JSON:decode(fd:read("a"))
-        if type(decoded_table) == "table" then
-            memory.serverlist = decoded_table
-        else
-            warn(("Contents of '%s' did not parse to a table. In memory server list is empty"):format(memory.filename))
-        end
-        fd:close()
-    elseif errstr ~= nil then
-        warn(errstr)
-    else
-        warn(("An unknown issue occurred when trying to open '%s'"):format(memory.filename))
+    local serverlist, err = serde.import(memory.filepath)
+    if err == nil then
+        memory.serverlist = serverlist
     end
 
     if options.options.sync_on_mason_change.on_install then
