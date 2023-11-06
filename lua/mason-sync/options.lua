@@ -43,7 +43,7 @@ local default_opts = {
         -- function that generates a commit message. If set to nil or returns nil, it will fallback
         -- to manual prompt
         ---@type string | function | nil
-        commit_message = function ()
+        commit_message = function()
             return nil
         end
     },
@@ -68,14 +68,14 @@ local options_acceptable_types = {
 
 M.options = default_opts
 
-M.parse_options = function (opts)
+M.parse_options = function(opts)
     if opts == nil or type(opts) ~= "table" or opts == {} then
         M.options = default_opts
         return
     end
 
     local parser
-    parser = function (default_opts, user_opts, acceptable_types)
+    parser = function(default_opts, user_opts, acceptable_types)
         local opts = default_opts
         for key, default_value in pairs(default_opts) do
             if vim.tbl_contains(vim.tbl_keys(user_opts), key) then

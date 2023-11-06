@@ -2,18 +2,18 @@ local plenary_ok, plenary = pcall(require, "plenary")
 if not plenary_ok then
     error("Make sure you have plenary installed!", 1)
 end
-local options = require("mason-sync.options")
 local JSON = require("JSON")
+local options = require("mason-sync.options")
 
 local M = {}
 
 -- A synchronous importer. Deserializes based on the file's extension
 ---@param filepath string
 ---@return table<string>, string | nil
-M.import = function (filepath)
+M.import = function(filepath)
     local fd, errstr = io.open(filepath, "r")
 
-    local decoder = function (fd)
+    local decoder = function(fd)
         local filetype = plenary.filetype.detect_from_extension(filepath)
         if filetype == "json" then
             return JSON:decode(fd:read("a"))
@@ -27,16 +27,18 @@ M.import = function (filepath)
         if type(decoded_table) == "table" then
             return decoded_table, nil
         else
-            errstr = ("Contents of '%s' did not parse to a table. In memory server list is empty"):format(filename)
-            warn(errstr)
+            errstr = ("Contents of '%s' did not parse to a table. In memory server list is empty"):format(
+                filepath
+            )
+            vim.notify(errstr)
             return {}, errstr
         end
     elseif errstr ~= nil then
-        warn(errstr)
+        vim.notify(errstr)
         return {}, errstr
     else
         errstr = ("An unknown issue occurred when trying to open '%s'"):format(filepath)
-        warn(errstr)
+        vim.notify(errstr)
         return {}, errstr
     end
 end
@@ -45,11 +47,12 @@ end
 ---@param filepath string
 ---@param serverlist table<string>
 ---@return nil
-M.export = function (filepath, serverlist)
+M.export = function(filepath, serverlist)
     local filetype = plenary.filetype.detect_from_extension(filepath)
 
     if filetype == "json" then
-        local servers_json_str = JSON:encode(serverlist, nil, { pretty = true, indent = "    ", array_newline = true })
+        local servers_json_str =
+            JSON:encode(serverlist, nil, { pretty = true, indent = "    ", array_newline = true })
 
         if options.options.git.enable then
             error("Not implemented yet")
