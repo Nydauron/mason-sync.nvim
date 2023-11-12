@@ -1,5 +1,6 @@
 local M = {}
 
+---@class MasonSyncOptions
 local default_opts = {
     -- The file used for storing all installed Mason servers. Defaults
     -- to root of git repo (if git option is enabled) or root of neovim

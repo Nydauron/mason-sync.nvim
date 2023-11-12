@@ -27,6 +27,7 @@ local on_uninstall_success_handler = function(pkg)
     vim.notify(("Removed %s from %s"):format(pkg.name, memory.filename))
 end
 
+---@param opts MasonSyncOptions
 M.setup = function(opts)
     options.parse_options(opts)
 
