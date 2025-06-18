@@ -69,7 +69,9 @@ M.ensure_installed_servers = function()
     return vim.tbl_map(function(mason_name)
         local name = mason_name
         if mason_lspconfig then
-            name = mason_lspconfig.get_mappings().mason_to_lspconfig[name] or name
+            local mappings = mason_lspconfig.get_mappings()
+            local mason_to_lspconfig = mappings.mason_to_lspconfig or mappings.package_to_lspconfig
+            name = mason_to_lspconfig[name] or name
         end
         return name
     end, memory.serverlist)
