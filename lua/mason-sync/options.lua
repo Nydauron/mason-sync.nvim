@@ -80,7 +80,9 @@ M.parse_options = function(opts)
         local opts = default_opts
         for key, default_value in pairs(default_opts) do
             if vim.tbl_contains(vim.tbl_keys(user_opts), key) then
-                if type(default_value) == "table" and not vim.tbl_islist(default_value) then
+                local islist = vim.version.lt(vim.version(), { 0, 10, 0 }) and vim.tbl_islist
+                    or vim.islist
+                if type(default_value) == "table" and not islist(default_value) then
                     -- recurse
                     local sub_options = parser(default_value, user_opts[key], acceptable_types[key])
                     opts[key] = sub_options
